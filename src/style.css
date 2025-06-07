@@ -161,6 +161,112 @@ body {
   color: var(--secondary);
 }
 
+/* Special particle styles for different types */
+.code-particle.math-particle {
+  font-size: 0.85rem;
+  color: var(--warning);
+  opacity: 0.12;
+  font-weight: 600;
+}
+
+.code-particle.symbol-particle {
+  font-size: 0.8rem;
+  color: var(--secondary);
+  opacity: 0.1;
+  font-weight: 500;
+}
+
+.code-particle.binary-particle {
+  font-size: 0.7rem;
+  color: var(--accent);
+  opacity: 0.08;
+  font-family: "Courier New", monospace;
+  letter-spacing: 1px;
+}
+
+[data-theme="dark"] .code-particle.math-particle {
+  color: var(--warning);
+  opacity: 0.15;
+}
+
+[data-theme="dark"] .code-particle.symbol-particle {
+  color: var(--secondary);
+  opacity: 0.12;
+}
+
+[data-theme="dark"] .code-particle.binary-particle {
+  color: var(--primary);
+  opacity: 0.1;
+}
+
+/* Programming operators and punctuation */
+.code-particle.operator-particle {
+  font-size: 0.8rem;
+  color: var(--primary);
+  opacity: 0.12;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .code-particle.operator-particle {
+  color: var(--accent);
+  opacity: 0.14;
+}
+
+/* Programming keywords */
+.code-particle.keyword-particle {
+  font-size: 0.75rem;
+  color: var(--secondary);
+  opacity: 0.1;
+  font-weight: 600;
+  font-style: italic;
+}
+
+[data-theme="dark"] .code-particle.keyword-particle {
+  color: var(--warning);
+  opacity: 0.12;
+}
+
+/* File extensions */
+.code-particle.extension-particle {
+  font-size: 0.7rem;
+  color: var(--accent);
+  opacity: 0.08;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .code-particle.extension-particle {
+  color: var(--secondary);
+  opacity: 0.1;
+}
+
+/* Tech abbreviations and tools */
+.code-particle.tech-particle {
+  font-size: 0.75rem;
+  color: var(--primary);
+  opacity: 0.1;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+[data-theme="dark"] .code-particle.tech-particle {
+  color: var(--accent);
+  opacity: 0.12;
+}
+
+/* Protocols and concepts */
+.code-particle.protocol-particle {
+  font-size: 0.8rem;
+  color: var(--warning);
+  opacity: 0.09;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .code-particle.protocol-particle {
+  color: var(--primary);
+  opacity: 0.11;
+}
+
 @keyframes codeFloat {
   0% {
     transform: translateY(100vh) rotate(-180deg);
@@ -506,21 +612,6 @@ body {
 }
 
 /* Section cards - for individual sections */
-.section-card {
-  background: var(--bg-code);
-  border: 1px solid var(--border-code);
-  border-radius: 12px;
-  padding: 0;
-  margin: 0 0 3rem;
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition);
-  box-shadow: var(--shadow-md);
-  font-family: "Fira Code", monospace;
-  width: 100%;
-  max-width: 1100px;
-}
-
 .section-card::before {
   content: "";
   position: absolute;
@@ -651,11 +742,25 @@ body {
     width: 6px;
     height: 6px;
   }
-} /* Enhanced container animations - Much faster */
+}
+
+/* Simple and smooth container animations */
 .section-card {
+  background: var(--bg-code);
+  border: 1px solid var(--border-code);
+  border-radius: 12px;
+  padding: 0;
+  margin: 0 0 3rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  font-family: "Fira Code", monospace;
+  width: 100%;
+  max-width: 1100px;
   opacity: 0;
   transform: translateY(20px);
-  transition: all 0.4s ease-out;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out,
+    box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .section-card.animate-in {
@@ -665,29 +770,22 @@ body {
 
 .section-connector {
   opacity: 0;
-  transform: translateY(15px) scale(0.9);
-  transition: all 0.3s ease-out;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .section-connector.animate-in {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
 }
 
-/* Remove staggered delays - too slow */
-.section-card:nth-child(odd) {
-  transition-delay: 0s;
-}
-.section-card:nth-child(even) {
-  transition-delay: 0s;
-}
-
-/* Social section enhanced animation */
+/* Social section animation */
 .social-section {
   opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.4s ease-out;
+  transform: translateY(15px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
+
 .social-section.animate-in {
   opacity: 1;
   transform: translateY(0);
@@ -1177,17 +1275,32 @@ code {
   width: 16px;
   height: 16px;
   display: inline-block;
-  animation: heartPulse 1.5s ease-in-out infinite;
+  animation: realisticHeartbeat 2.5s ease-in-out infinite;
   margin: 0 2px;
   vertical-align: middle;
+  color: #e53e3e;
+  transition: color 0.3s ease;
 }
 
-@keyframes heartPulse {
+[data-theme="dark"] .heart-svg {
+  color: #ff6b6b;
+}
+
+@keyframes realisticHeartbeat {
   0% {
     transform: scale(1);
   }
-  50% {
-    transform: scale(1.3);
+  7% {
+    transform: scale(1.25);
+  }
+  14% {
+    transform: scale(1);
+  }
+  21% {
+    transform: scale(1.15);
+  }
+  28% {
+    transform: scale(1);
   }
   100% {
     transform: scale(1);
@@ -1476,26 +1589,34 @@ code {
   color: var(--text-primary);
 }
 
-/* Cursor Animation - Compact */
+/* Cursor Animation - Enhanced with Theme Colors */
 .cursor {
   display: inline-block;
-  width: 1px;
-  height: 1em;
+  width: 2px;
+  height: 1.2em;
   background: var(--primary);
-  margin-left: 1px;
+  margin-left: 2px;
   animation: cursorBlink 1s infinite;
-  vertical-align: top;
+  vertical-align: text-bottom;
+  position: relative;
+  top: -0.1em;
 }
 
 @keyframes cursorBlink {
   0%,
   50% {
     opacity: 1;
+    background: var(--primary);
   }
   51%,
   100% {
     opacity: 0;
   }
+}
+
+/* Dark theme cursor styling */
+[data-theme="dark"] .cursor {
+  background: var(--accent);
 }
 
 /* Compact Progress Bar */
@@ -1602,23 +1723,225 @@ code {
   color: var(--text-code);
 }
 
-/* Extra Small Devices */
-@media (max-width: 320px) {
-  .container {
-    padding: 0 0.75rem;
-  }
+/* ==========================================
+   SLIDING DARK THEME TRANSITION
+   ========================================== */
 
-  .bio-card,
-  .social-section {
-    padding: 0.75rem;
-  }
+/* Theme transition overlay */
+.theme-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  z-index: 10000;
+  transform: translateY(-100%);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
-  .hero-title {
-    font-size: 1.5rem;
-  }
+.theme-transition-overlay.sliding-in {
+  transform: translateY(0);
+}
 
-  .profile-image {
-    width: 100px;
-    height: 100px;
+.theme-transition-overlay.sliding-out {
+  transform: translateY(100%);
+}
+
+/* Theme transition content */
+.theme-transition-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.theme-transition-overlay.sliding-in .theme-transition-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.theme-transition-icon {
+  width: 60px;
+  height: 60px;
+  color: #6634f1;
+  animation: themeIconSpin 1s ease-in-out;
+}
+
+.theme-transition-text {
+  font-family: "Fira Code", monospace;
+  font-size: 1rem;
+  color: #0a0a0f;
+  font-weight: 500;
+}
+
+@keyframes themeIconSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
   }
 }
+
+/* Theme-specific text and icon colors - handled by JavaScript for background */
+
+[data-theme="dark"] .theme-transition-text {
+  color: #f7fafc;
+}
+
+[data-theme="dark"] .theme-transition-icon {
+  color: #00d4ff;
+}
+
+/* ==========================================
+   MODERN CUSTOM CURSOR
+   ========================================== */
+
+/* Hide default cursor */
+* {
+  cursor: none !important;
+}
+
+/* ==========================================
+   CUSTOM CURSOR - USER FRIENDLY DESIGN
+   ========================================== */
+
+/* Custom cursor container */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Main cursor dot - subtle and friendly */
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+}
+
+/* Cursor outline ring - subtle indication */
+.cursor-ring {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--primary);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.4;
+}
+
+/* Hover state - friendly feedback */
+.custom-cursor.cursor-hover .cursor-dot {
+  background: var(--secondary);
+  transform: translate(-50%, -50%) scale(1.2);
+  box-shadow: 0 0 15px rgba(184, 130, 252, 0.5);
+}
+
+.custom-cursor.cursor-hover .cursor-ring {
+  transform: translate(-50%, -50%) scale(1.2);
+  opacity: 0.7;
+  border-color: var(--secondary);
+  border-width: 2px;
+}
+
+/* Click state - subtle feedback */
+.custom-cursor.cursor-click .cursor-dot {
+  transform: translate(-50%, -50%) scale(0.8);
+  background: var(--secondary);
+}
+
+.custom-cursor.cursor-click .cursor-ring {
+  transform: translate(-50%, -50%) scale(1.4);
+  opacity: 0.8;
+  border-color: var(--secondary);
+}
+
+/* Theme-aware cursor colors */
+[data-theme="light"] .cursor-dot {
+  background: var(--primary);
+  box-shadow: 0 0 8px rgba(0, 255, 204, 0.2);
+}
+
+[data-theme="light"] .cursor-ring {
+  border-color: var(--primary);
+}
+
+[data-theme="light"] .custom-cursor.cursor-hover .cursor-dot {
+  background: var(--secondary);
+  box-shadow: 0 0 12px rgba(184, 130, 252, 0.4);
+}
+
+[data-theme="dark"] .cursor-dot {
+  background: #00ffcc;
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+}
+
+[data-theme="dark"] .cursor-ring {
+  border-color: #00ffcc;
+}
+
+[data-theme="dark"] .custom-cursor.cursor-hover .cursor-dot {
+  background: var(--secondary);
+  box-shadow: 0 0 15px rgba(184, 130, 252, 0.6);
+}
+
+[data-theme="dark"] .custom-cursor.cursor-hover .cursor-ring {
+  border-color: var(--secondary);
+}
+
+/* Smooth theme transition for cursor */
+.cursor-dot,
+.cursor-ring {
+  transition: all 0.3s ease, background-color 0.5s ease, border-color 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+/* Hide cursor on mobile/touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+/* Reduce cursor effects on slower devices */
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor,
+  .cursor-dot,
+  .cursor-ring {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ==========================================
+   CSS CUSTOM PROPERTIES (CSS VARIABLES)
+   ========================================== */
