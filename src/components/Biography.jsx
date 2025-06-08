@@ -1,8 +1,58 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const BiographySection = ({ id, title, children, sectionNumber }) => {
   const lineNumbersRef = useRef(null);
   const contentRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Function to get relevant emoji based on section content
+  const getSectionEmoji = (title, sectionNumber) => {
+    const emojiMap = {
+      1: "👋", // Who I Am
+      2: "🌱", // Early Life
+      3: "🎓", // Educational Journey
+      4: "🏛️", // University Days
+      5: "💼", // Freelancing & Blogging
+      6: "🛠️", // Spot Web Tools
+      7: "📱", // GPA Calculator
+      8: "📜", // Historic Opportunity
+      9: "🎉", // Graduation
+      10: "🏢", // Founding HindukushSoft
+      11: "🎯", // Leading with Mission
+      12: "❤️", // Community
+      13: "🌟", // A Bigger Dream
+    };
+    return emojiMap[sectionNumber] || "📄";
+  };
+  
+  // Function to trim long file names for mobile
+  const getDisplayFileName = (title) => {
+    if (!title) return 'untitled';
+      // Convert title to file-friendly format
+    let fileName = title.toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, '-')
+      .trim();
+    
+    // Trim for mobile devices - increased limit since we have more space
+    // if (isMobile && fileName.length > 50) {
+    //   return fileName.substring(0, 50) + '...';
+    // }
+    
+    return fileName;
+  };
+
+  useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const generateLineNumbers = () => {
@@ -11,42 +61,43 @@ const BiographySection = ({ id, title, children, sectionNumber }) => {
       
       if (!lineNumbersContainer || !bioContent) return;
 
+      // Clear existing content
+      lineNumbersContainer.textContent = "";
+
       // Force a reflow to get accurate height
       bioContent.offsetHeight;
 
       // Get the computed line height
       const computedStyle = window.getComputedStyle(bioContent);
-      const lineHeight = parseFloat(computedStyle.lineHeight);
+      const lineHeight = parseFloat(computedStyle.lineHeight) || 26;
 
       // Get the actual content height including all text
       const contentHeight = bioContent.scrollHeight;
-      const paddingTop = parseFloat(computedStyle.paddingTop);
-      const paddingBottom = parseFloat(computedStyle.paddingBottom);
+      const paddingTop = parseFloat(computedStyle.paddingTop) || 32;
+      const paddingBottom = parseFloat(computedStyle.paddingBottom) || 32;
 
       // Calculate effective content height
       const effectiveHeight = contentHeight - paddingTop - paddingBottom;
 
-      // Calculate number of lines with increased buffer for spacing
+      // Calculate number of lines with buffer
       const numberOfLines = Math.max(
-        Math.ceil(effectiveHeight / lineHeight) + 8, // Increased buffer for spacing
-        25 // Higher minimum number of lines
+        Math.ceil(effectiveHeight / lineHeight) + 3,
+        15 // Minimum number of lines
       );
 
-      // Generate line numbers with proper spacing
+      // Generate line numbers
       let lineNumbers = "";
-      // Add a few empty lines at the top for spacing
-      lineNumbers += "\n\n";
       for (let j = 1; j <= numberOfLines; j++) {
-        lineNumbers += j.toString().padStart(3, " ") + "\n";
+        lineNumbers += j.toString().padStart(2, " ") + "\n";
       }
-      // Add a few empty lines at the bottom for spacing
-      lineNumbers += "\n\n\n";
 
       lineNumbersContainer.textContent = lineNumbers.trim();
     };
 
-    // Generate line numbers after component mounts and when fonts load
-    const timer = setTimeout(generateLineNumbers, 100);
+    // Generate line numbers with multiple attempts
+    const timer1 = setTimeout(generateLineNumbers, 50);
+    const timer2 = setTimeout(generateLineNumbers, 200);
+    const timer3 = setTimeout(generateLineNumbers, 500);
     
     // Regenerate on font load
     document.fonts.ready.then(() => {
@@ -55,26 +106,75 @@ const BiographySection = ({ id, title, children, sectionNumber }) => {
 
     // Regenerate on window resize
     const handleResize = () => {
-      setTimeout(generateLineNumbers, 200);
+      setTimeout(generateLineNumbers, 100);
     };
     
     window.addEventListener("resize", handleResize);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
       window.removeEventListener("resize", handleResize);
     };
   }, [children]);
+  
+  // Add mouse tracking for glow effect
+  useEffect(() => {
+    const cardElement = document.getElementById(id);
+    if (!cardElement) return;
+
+    const handleMouseMove = (e) => {
+      const rect = cardElement.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      
+      cardElement.style.setProperty('--mouse-x', `${x}%`);
+      cardElement.style.setProperty('--mouse-y', `${y}%`);
+    };
+
+    cardElement.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      cardElement.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [id]);
 
   return (
-    <div className="section-card" id={id}>
-      <div className="line-numbers" ref={lineNumbersRef}></div>
-      <div className="bio-content" ref={contentRef}>
-        <h2 className={`section-title ${title.toLowerCase().replace(/\s+/g, '-').replace(/&/g, '')}`}>
-          {title}
-        </h2>
-        <div className="section-content">
-          {children}
+    <div className="section-card code-editor-card" id={id}>
+      {/* Code Editor Toolbar */}
+      <div className="code-editor-toolbar">
+        <div className="toolbar-left">
+          <div className="window-controls">
+            <span className="control close"></span>
+            <span className="control minimize"></span>
+            <span className="control maximize"></span>
+          </div>          <div className="file-tab">
+            <span className="file-icon">{getSectionEmoji(title, sectionNumber)}</span>
+            <span className="file-name">{getDisplayFileName(title)}.jsx</span>
+            <span className="file-modified">●</span>
+          </div>
+        </div>
+      </div>
+      
+      {/* Code Editor Content */}
+      <div className="code-editor-content">
+        <div className="line-numbers" ref={lineNumbersRef}></div>
+        <div className="bio-content" ref={contentRef}>
+          <h2 className={`section-title section-${sectionNumber}`} data-section={sectionNumber}>
+            {title}
+          </h2>
+          <div className="section-content">
+            {children}
+          </div>
+        </div>
+      </div>
+        {/* Code Editor Footer */}
+      <div className="code-editor-footer">
+        <div className="footer-left">
+          <span className="encoding">UTF-8</span>
+        </div><div className="footer-right">
+          <span className="cursor-position">Ln {sectionNumber * 15 + Math.floor(Math.random() * 10) + 5}, Col {Math.floor(Math.random() * 60) + 20}</span>
         </div>
       </div>
     </div>

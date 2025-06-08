@@ -8,7 +8,6 @@ import Biography from "./components/Biography";
 import SocialSection from "./components/SocialSection";
 import Footer from "./components/Footer";
 import CodeParticles from "./components/CodeParticles";
-import ScrollProgress from "./components/ScrollProgress";
 
 const App = () => {
   const [theme, setTheme] = useState("light");
@@ -36,18 +35,16 @@ const App = () => {
     });
     
     setShowThemeTransition(true);
-    
-    // Change theme after overlay covers screen
+      // Change theme after overlay covers screen
     setTimeout(() => {
       setTheme(newTheme);
       localStorage.setItem("theme", newTheme);
       document.body.setAttribute("data-theme", newTheme);
     }, 850);
-    
-    // Hide transition after showing message
+      // Hide transition after showing message
     setTimeout(() => {
       setShowThemeTransition(false);
-    }, 2650);
+    }, 3000);
   };
 
   // Handle preloader completion
@@ -61,14 +58,10 @@ const App = () => {
     <>
       {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
       
-      <CustomCursor />
-      
-      <ThemeTransition 
+      <CustomCursor />      <ThemeTransition 
         show={showThemeTransition}
         data={themeTransitionData}
       />
-      
-      <ScrollProgress />
       <CodeParticles />
       
       <Header onThemeToggle={handleThemeToggle} theme={theme} />
