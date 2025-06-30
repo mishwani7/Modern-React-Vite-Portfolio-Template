@@ -7,13 +7,16 @@ const Hero = () => {
   const [showCursor, setShowCursor] = useState(true);
   // Dynamic rotating texts for location with proper code syntax
 const locationTexts = [
-  'location: "Drosh, Chitral, Pakistan"',
-  'company: "HindukushSoft Technologies Pvt. Ltd."',
-  'role: "Founder, Full-Stack Developer & SEO Specialist"',
-  'mission: "Creating Opportunities & Empowering Youth Through Technology"',
-  'skills: ["Web & Mobile Development", "SEO", "Leadership"]',
-  'passion: "Building Solutions That Uplift Communities"'
+  'Virgo (Born August 24, 2000)',
+  'Founder HindukushSoft Technologies',
+  'Tech Writer at TechABU',
+  'CS Graduate, University of Chitral',
+  'CEO, Full-Stack Developer & SEO Specialist',
+  'Empowering Youth with Tech',
+  'Web & Mobile Development, SEO, Leadership',
+  'Building Solutions That Uplift Communities'
 ];
+
   // Simple code writing effect
   useEffect(() => {
     const writeCode = async (text) => {
@@ -57,10 +60,9 @@ const locationTexts = [
       <div className="container">
         <div className="profile-section">
           <div className="profile-container">
-            <div className="profile-border"></div>
-            <div className="profile-image">
+            <div className="profile-border"></div>            <div className="profile-image">
               <img
-                src="https://mishwani.techabu.co/wp-content/uploads/2025/06/abu-zar.mishwani.webp"
+                src="/images/abu-zar.mishwani.webp"
                 alt="Abu Zar Mishwani"
               />
               <div

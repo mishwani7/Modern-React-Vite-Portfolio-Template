@@ -82,8 +82,7 @@ const SocialSection = () => {
       icon: "fa-brands fa-github",
       platform: "github",
       username: "@mishwani7"
-    },
-    {
+    },    {
       href: "https://mishwani.techabu.co/",
       icon: "fa-solid fa-globe",
       platform: "portfolio",
@@ -96,8 +95,7 @@ const SocialSection = () => {
       username: "@mishwani"
     }
   ];  return (
-    <div className="container">
-      <div className="social-section code-editor-card">
+    <div className="social-section code-editor-card">
         {/* Code Editor Toolbar */}
         <div className="code-editor-toolbar">
           <div className="window-controls">
@@ -107,7 +105,7 @@ const SocialSection = () => {
           </div>          <div className="file-tabs">
             <div className="file-tab active">
               <span className="file-icon">🔗</span>
-              <span className="file-name">social-connections.jsx</span>
+              <span className="file-name">connect.jsx</span>
               <span className="file-modified">●</span>
             </div>          </div>
         </div>
@@ -164,14 +162,11 @@ const SocialSection = () => {
         <div className="code-editor-footer">
           <div className="footer-left">
             <span className="encoding">UTF-8</span>
-            <span className="line-ending">LF</span>
           </div><div className="footer-right">
-            <span className="cursor-position">Ln 20, Col 2</span>
-          </div>
+            <span className="cursor-position">Ln 20, Col 2</span>          </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default SocialSection;
+    );
+  };
+  
+  export default SocialSection;

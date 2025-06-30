@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Structured Data</title>
+  </head>
+  <body>
+    <h1>Testing Structured Data</h1>
+    <script>
+      // Test structured data from the production build
+      fetch("http://localhost:8080")
+        .then((response) => response.text())
+        .then((html) => {
+          console.log("HTML loaded");
+          // Create a temporary DOM to parse the HTML
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+
+          // Check for structured data scripts
+          const jsonLdScripts = doc.querySelectorAll(
+            'script[type="application/ld+json"]'
+          );
+          console.log(`Found ${jsonLdScripts.length} JSON-LD scripts`);
+
+          jsonLdScripts.forEach((script, index) => {
+            try {
+              const data = JSON.parse(script.innerHTML);
+              console.log(`Script ${index + 1}:`, data);
+            } catch (e) {
+              console.error(`Error parsing script ${index + 1}:`, e);
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching page:", error);
+        });
+    </script>
+  </body>
+</html>

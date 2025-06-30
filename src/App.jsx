@@ -1,13 +1,17 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import Preloader from "./components/Preloader";
 import CustomCursor from "./components/CustomCursor";
 import ThemeTransition from "./components/ThemeTransition";
+import ScrollProgress from "./components/ScrollProgress";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Biography from "./components/Biography";
-import SocialSection from "./components/SocialSection";
-import Footer from "./components/Footer";
 import CodeParticles from "./components/CodeParticles";
+import StructuredData from "./components/StructuredData";
+
+// Lazy load non-critical components for better performance
+const Biography = React.lazy(() => import("./components/Biography"));
+const SocialSection = React.lazy(() => import("./components/SocialSection"));
+const Footer = React.lazy(() => import("./components/Footer"));
 
 const App = () => {
   const [theme, setTheme] = useState("light");
@@ -52,27 +56,35 @@ const App = () => {
     setIsLoading(false);
     document.body.classList.add("loaded");
     document.body.classList.remove("loading");
-  };
-
-  return (
+  };  return (
     <>
+      <StructuredData />
       {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
       
-      <CustomCursor />      <ThemeTransition 
+      <CustomCursor />
+      <ScrollProgress />
+      <ThemeTransition 
         show={showThemeTransition}
         data={themeTransitionData}
       />
       <CodeParticles />
-      
-      <Header onThemeToggle={handleThemeToggle} theme={theme} />
-      
-      <main className="main">
+        <Header onThemeToggle={handleThemeToggle} theme={theme} />
+        <main className="main">
         <Hero />
-        <Biography />
-        <SocialSection />
+        <div className="container">
+          <Suspense fallback={<div className="loading-placeholder">Loading...</div>}>
+            <Biography />
+          </Suspense>
+          <div className="section-connector"></div>
+          <Suspense fallback={<div className="loading-placeholder">Loading...</div>}>
+            <SocialSection />
+          </Suspense>
+        </div>
       </main>
       
-      <Footer />
+      <Suspense fallback={<div className="loading-placeholder">Loading...</div>}>
+        <Footer />
+      </Suspense>
     </>
   );
 };

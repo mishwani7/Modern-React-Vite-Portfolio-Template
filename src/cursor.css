@@ -1,0 +1,224 @@
+/* Custom Cursor Styles - Simple & Elegant */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  /* mix-blend-mode: difference; */
+  transition: all 0.1s ease;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: #6634f1;
+  border-radius: 50%;
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px rgba(102, 52, 241, 0.5);
+  will-change: transform, background, box-shadow;
+}
+
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(102, 52, 241, 0.3);
+  border-radius: 50%;
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  will-change: transform, opacity, border-color;
+}
+
+/* Hover States */
+.custom-cursor.hovering .cursor-dot {
+  transform: scale(1.5);
+  background: #b882fc;
+  box-shadow: 0 0 15px rgba(184, 130, 252, 0.6);
+}
+
+.custom-cursor.hovering .cursor-ring {
+  opacity: 1;
+  border-color: rgba(184, 130, 252, 0.5);
+  transform: scale(1.2);
+}
+
+/* Interactive Elements */
+.custom-cursor.interactive .cursor-dot {
+  transform: scale(2);
+  background: #00d4ff;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.7);
+}
+
+.custom-cursor.interactive .cursor-ring {
+  opacity: 1;
+  border-color: rgba(0, 212, 255, 0.6);
+  transform: scale(1.5);
+}
+
+/* Code Elements */
+.custom-cursor.code .cursor-dot {
+  background: #10b981;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+}
+
+.custom-cursor.code .cursor-ring {
+  opacity: 1;
+  border-color: rgba(16, 185, 129, 0.5);
+  border-style: dashed;
+}
+
+/* Text Elements */
+.custom-cursor.text .cursor-dot {
+  background: #b882fc;
+  box-shadow: 0 0 12px rgba(184, 130, 252, 0.5);
+}
+
+.custom-cursor.text .cursor-ring {
+  opacity: 1;
+  border-color: rgba(184, 130, 252, 0.4);
+}
+
+/* Clicking State */
+.custom-cursor.clicking .cursor-dot {
+  transform: scale(0.8);
+}
+
+.custom-cursor.clicking .cursor-ring {
+  transform: scale(2);
+  opacity: 0.8;
+}
+
+/* Code Display */
+.cursor-code {
+  position: absolute;
+  top: -40px;
+  left: 20px;
+  /* background: rgba(10, 10, 15, 0.95); */
+  color: #6634f1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  white-space: nowrap;
+  border: 1px solid rgba(102, 52, 241, 0.3);
+  animation: fadeInCode 0.3s ease;
+}
+
+[data-theme="dark"] .cursor-code {
+  background: rgba(17, 24, 39, 0.95);
+  color: #b882fc;
+  border-color: rgba(184, 130, 252, 0.3);
+}
+
+@keyframes fadeInCode {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Particles */
+.cursor-particle {
+  position: fixed;
+  background: #6634f1;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  animation: particleFloat 1s ease-out forwards;
+}
+
+@keyframes particleFloat {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+/* Ripples */
+.cursor-ripple {
+  position: fixed;
+  border: 3px solid rgba(102, 52, 241, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9997;
+  animation: rippleExpand 0.8s ease-out forwards;
+}
+
+@keyframes rippleExpand {
+  0% {
+    transform: scale(0);
+    opacity: 0.9;
+    border-width: 3px;
+  }
+  50% {
+    opacity: 0.6;
+    border-width: 2px;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+/* Subtle Trail Effect */
+.cursor-trail-point {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: rgba(102, 52, 241, 0.3);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9996;
+  transition: opacity 0.2s ease;
+}
+
+.dark .cursor-trail-point {
+  background: rgba(184, 130, 252, 0.3);
+}
+
+/* Dark theme adjustments */
+.dark .cursor-dot {
+  background: #b882fc;
+  box-shadow: 0 0 10px rgba(184, 130, 252, 0.5);
+}
+
+.dark .cursor-ring {
+  border-color: rgba(184, 130, 252, 0.3);
+}
+
+.dark .cursor-code {
+  background: rgba(17, 24, 39, 0.95);
+  color: #b882fc;
+  border-color: rgba(184, 130, 252, 0.3);
+}
+
+.dark .cursor-particle {
+  background: #b882fc;
+}
+
+.dark .cursor-ripple {
+  border-color: rgba(184, 130, 252, 0.8);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .custom-cursor {
+    display: none;
+  }
+}

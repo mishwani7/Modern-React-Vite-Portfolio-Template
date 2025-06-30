@@ -5,20 +5,17 @@ const Preloader = ({ onComplete }) => {
   const [showCodeLines, setShowCodeLines] = useState([]);
   const [isCompleting, setIsCompleting] = useState(false);
 
-  useEffect(() => {
-    // Animate code lines appearing
+  useEffect(() => {    // Animate code lines appearing
     const codeLineTimeouts = [];
     for (let i = 0; i < 5; i++) {
       const timeout = setTimeout(() => {
         setShowCodeLines(prev => [...prev, i]);
-      }, i * 200);
+      }, i * 100);
       codeLineTimeouts.push(timeout);
-    }
-
-    // Simulate loading progress
+    }    // Simulate loading progress
     const progressInterval = setInterval(() => {
       setProgress(prev => {
-        const increment = Math.random() * 12;
+        const increment = Math.random() * 15;
         const newProgress = Math.min(prev + increment, 95);
         
         if (newProgress >= 95) {
@@ -35,18 +32,18 @@ const Preloader = ({ onComplete }) => {
                 // Complete preloader after fade out
                 setTimeout(() => {
                   onComplete();
-                }, 600); // Match CSS transition duration
+                }, 300); // Match CSS transition duration
                 
                 return 100;
               }
-              return current + 1;
+              return current + 2;
             });
-          }, 100);
+          }, 50);
         }
         
         return newProgress;
       });
-    }, 150);
+    }, 80);
 
     return () => {
       clearInterval(progressInterval);

@@ -5,39 +5,54 @@ const BiographySection = ({ id, title, children, sectionNumber }) => {
   const contentRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
   
+  // Function to get custom short titles for sections
+  const getCustomTitle = (sectionNumber) => {
+    const titleMap = {
+      1: "Introduction",
+      2: "Origins", 
+      3: "Education",
+      4: "University",
+      5: "Freelancing",
+      6: "Web Tools",
+      7: "Mobile App",
+      8: "Government",
+      9: "Graduation",
+      10: "Startup",
+      11: "Leadership",
+      12: "Community",
+      13: "Vision",
+    };
+    return titleMap[sectionNumber] || "Section";
+  };
+  
   // Function to get relevant emoji based on section content
   const getSectionEmoji = (title, sectionNumber) => {
     const emojiMap = {
-      1: "👋", // Who I Am
-      2: "🌱", // Early Life
-      3: "🎓", // Educational Journey
-      4: "🏛️", // University Days
-      5: "💼", // Freelancing & Blogging
-      6: "🛠️", // Spot Web Tools
-      7: "📱", // GPA Calculator
-      8: "📜", // Historic Opportunity
+      1: "👋", // Introduction
+      2: "🌱", // Origins
+      3: "🎓", // Education
+      4: "🏛️", // University
+      5: "💼", // Freelancing
+      6: "🛠️", // Web Tools
+      7: "📱", // Mobile App
+      8: "📜", // Government
       9: "🎉", // Graduation
-      10: "🏢", // Founding HindukushSoft
-      11: "🎯", // Leading with Mission
+      10: "🏢", // Startup
+      11: "🎯", // Leadership
       12: "❤️", // Community
-      13: "🌟", // A Bigger Dream
+      13: "🌟", // Vision
     };
     return emojiMap[sectionNumber] || "📄";
   };
   
   // Function to trim long file names for mobile
-  const getDisplayFileName = (title) => {
-    if (!title) return 'untitled';
-      // Convert title to file-friendly format
-    let fileName = title.toLowerCase()
+  const getDisplayFileName = (sectionNumber) => {
+    const customTitle = getCustomTitle(sectionNumber);
+    // Convert title to file-friendly format
+    let fileName = customTitle.toLowerCase()
       .replace(/[^a-z0-9\s]/g, '')
       .replace(/\s+/g, '-')
       .trim();
-    
-    // Trim for mobile devices - increased limit since we have more space
-    // if (isMobile && fileName.length > 50) {
-    //   return fileName.substring(0, 50) + '...';
-    // }
     
     return fileName;
   };
@@ -59,13 +74,13 @@ const BiographySection = ({ id, title, children, sectionNumber }) => {
       const lineNumbersContainer = lineNumbersRef.current;
       const bioContent = contentRef.current;
       
-      if (!lineNumbersContainer || !bioContent) return;
-
-      // Clear existing content
+      if (!lineNumbersContainer || !bioContent) return;      // Clear existing content
       lineNumbersContainer.textContent = "";
 
-      // Force a reflow to get accurate height
-      bioContent.offsetHeight;
+      // Force layout recalculation and reset height constraints
+      bioContent.style.height = 'auto';
+      bioContent.style.minHeight = 'auto';
+      bioContent.offsetHeight; // Force reflow
 
       // Get the computed line height
       const computedStyle = window.getComputedStyle(bioContent);
@@ -77,13 +92,9 @@ const BiographySection = ({ id, title, children, sectionNumber }) => {
       const paddingBottom = parseFloat(computedStyle.paddingBottom) || 32;
 
       // Calculate effective content height
-      const effectiveHeight = contentHeight - paddingTop - paddingBottom;
-
-      // Calculate number of lines with buffer
-      const numberOfLines = Math.max(
-        Math.ceil(effectiveHeight / lineHeight) + 3,
-        15 // Minimum number of lines
-      );
+      const effectiveHeight = contentHeight - paddingTop - paddingBottom;      // Calculate number of lines based purely on content (no artificial minimum)
+      const actualContentLines = Math.ceil(effectiveHeight / lineHeight);
+      const numberOfLines = Math.max(actualContentLines + 1, 2); // Just 1-2 extra lines, minimum 2 total
 
       // Generate line numbers
       let lineNumbers = "";
@@ -151,7 +162,7 @@ const BiographySection = ({ id, title, children, sectionNumber }) => {
             <span className="control maximize"></span>
           </div>          <div className="file-tab">
             <span className="file-icon">{getSectionEmoji(title, sectionNumber)}</span>
-            <span className="file-name">{getDisplayFileName(title)}.jsx</span>
+            <span className="file-name">{getDisplayFileName(sectionNumber)}.jsx</span>
             <span className="file-modified">●</span>
           </div>
         </div>
@@ -224,12 +235,11 @@ const Biography = () => {
       observer.disconnect();
     };
   }, []);
-
   return (
-    <div className="container">
+    <>
       <BiographySection id="who-i-am" title="Who I Am" sectionNumber={1}>
         <p>
-          My name <span className="highlight">Abu Zar Mishwani</span>, and
+          My name is <span className="highlight">Abu Zar Mishwani</span>, and
           I'm from a beautiful town called Drosh, located in Chitral,
           Pakistan. People close to me also call me{" "}
           <span className="highlight">Mufasa</span>, a nickname I proudly carry.
@@ -454,10 +464,9 @@ const Biography = () => {
             I believe the best way to shape the future is to take the lead
             and create it yourself.
           </p>
-          <p className="quote-author">— Abu Zar Mishwani</p>
-        </div>
+          <p className="quote-author">— Abu Zar Mishwani</p>        </div>
       </BiographySection>
-    </div>
+    </>
   );
 };
 

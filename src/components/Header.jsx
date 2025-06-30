@@ -1,4 +1,5 @@
 import React from "react";
+import HeaderScrollProgress from "./HeaderScrollProgress";
 
 const Header = ({ onThemeToggle, theme }) => {
   return (
@@ -22,6 +23,7 @@ const Header = ({ onThemeToggle, theme }) => {
           </div>
         </div>
       </nav>
+      <HeaderScrollProgress />
     </header>
   );
 };
